@@ -22,6 +22,7 @@ const NewEditor: React.FC = () => {
     left: false,
     right: false,
     center: false,
+    linkUrl: "",
     showLinkInput: false,
   });
 
@@ -84,9 +85,36 @@ const NewEditor: React.FC = () => {
     }
   }, []);
 
+  const applyLink = () => {
+    const selectedText = window.getSelection()?.toString();
+    if (selectedText) {
+      const linkHtml = `<a href="${formattingState.linkUrl}">${selectedText}</a>`;
+
+      const selection = window.getSelection();
+      const range = selection?.getRangeAt(0);
+      const preSelectionRange = range?.cloneRange();
+      preSelectionRange?.selectNodeContents(contentEditableRef.current!);
+      preSelectionRange?.setEnd(range!.startContainer, range!.startOffset);
+      const start = preSelectionRange?.toString().length;
+
+      const modifiedText =
+        text.substring(0, start) +
+        linkHtml +
+        text.substring(start! + selectedText.length);
+
+      setText(modifiedText);
+    }
+
+    setFormattingState((prevState) => ({
+      ...prevState,
+      linkUrl: "",
+      showLinkInput: false,
+    }));
+  };
+
   return (
     <div>
-      <div className="border bg-FAFAFA w-auto h-auto mx-2 md:w-[662px] md:h-[550px] md:mt-32 md:m-auto">
+      <div className="border bg-FAFAFA w-auto h-auto mx-2 md:w-[662px] md:h-[550px] mt-5 md:mt-20 md:m-auto">
         {/* post title */}
         <div className="w-full mx-2 mt-3 md:mx-6 md:my-2">
           <input
@@ -158,6 +186,29 @@ const NewEditor: React.FC = () => {
           </div>
         </div>
 
+        {formattingState.showLinkInput && (
+          <div className="md:mx-6 pb-2">
+            <input
+              type="text"
+              placeholder="Enter link URL"
+              value={formattingState.linkUrl}
+              onChange={(e) =>
+                setFormattingState((prevState) => ({
+                  ...prevState,
+                  linkUrl: e.target.value,
+                }))
+              }
+              className="border bg-white rounded-l-md placeholder:pl-2 placeholder:text-sm"
+            />
+            <button
+              onClick={applyLink}
+              className="border rounded-r-md px-2 bg-0A7227 text-white"
+            >
+              Add
+            </button>
+          </div>
+        )}
+
         <ContentEditable
           innerRef={contentEditableRef}
           html={text}
@@ -170,6 +221,9 @@ const NewEditor: React.FC = () => {
         <div className="mx-6 my-2">
           <Dropdown text={text} setText={setText} />
         </div>
+      </div>
+      <div className="w-auto border mx-2 text-end py-1 pr-3 md:w-[662px] md:m-auto rounded-b-md bg-white text-343E37 text-xs md:text-sm">
+        <p>0/1000 words</p>
       </div>
       <button className="border bg-0A7227 text-white rounded-md px-2.5 py-1 text-sm ml-2 md:ml-[62.5rem] mt-1">
         Post
