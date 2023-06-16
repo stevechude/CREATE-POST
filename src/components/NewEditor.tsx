@@ -198,7 +198,7 @@ const NewEditor: React.FC = () => {
                   linkUrl: e.target.value,
                 }))
               }
-              className="border bg-white rounded-l-md placeholder:pl-2 placeholder:text-sm"
+              className="border pl-3 bg-white rounded-l-md placeholder:pl-2 placeholder:text-sm"
             />
             <button
               onClick={applyLink}
