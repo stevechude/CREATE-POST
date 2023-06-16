@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.content {
+  @apply w-full md:w-[630px] h-auto pl-3 md:mx-6 rounded-md border outline-none;
+}
