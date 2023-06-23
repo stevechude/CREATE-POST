@@ -1,10 +1,13 @@
 import NewEditor from "./components/NewEditor";
+import { PostContextProvider } from "./context/store";
 
 function App() {
   return (
-    <div>
-      <NewEditor />
-    </div>
+    <PostContextProvider>
+      <div>
+        <NewEditor />
+      </div>
+    </PostContextProvider>
   );
 }
 

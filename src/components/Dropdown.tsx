@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { BsPlusLg, BsImageFill } from "react-icons/bs";
 import { TiVideo } from "react-icons/ti";
 import { TbChartBubbleFilled } from "react-icons/tb";
+import { usePostContext } from "../context/store";
 
-const Dropdown: React.FC<{
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ text, setText }) => {
+const Dropdown: React.FC = () => {
   const [showLinks, setShowLinks] = useState(false);
+  const { text, setText } = usePostContext();
 
   const handleEmbedClick = () => {
     setShowLinks(!showLinks);
